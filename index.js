@@ -133,7 +133,7 @@ function processProduct(num1, num2, callback) {
  * should return 3.
 */
 function processDuplicateFree(list, callback) {
-  
+
 }
 
 /////////////// HIGHER-ORDER ARRAY METHODS ///////////////
@@ -294,8 +294,12 @@ function firstNamesAllCaps(runners) {
  * @returns an array containing only the runners that use the given `tShirtSize`.
  * The runners in the array appear in the same order they appear in the `runners` array.
 */
-function getRunnersByTShirtSize() {
-
+function getRunnersByTShirtSize(runners, tShirtSize) {
+  let sizes = [];
+  runners.map(function(runner){
+    return runner.shirt_size === tShirtSize && sizes.push(runner)
+  });
+  return sizes;
 }
 
 /**
@@ -309,8 +313,11 @@ function getRunnersByTShirtSize() {
  * @param runners array of runners like the one inside the /data/runners.js file.
  * @returns a number which is the sum of the donations by all runners.
 */
-function tallyUpDonations(/* CODE HERE */) {
-  /* CODE HERE */
+function tallyUpDonations(runners) {
+  let sum = runners.reduce(function(accumulator, current){
+    return accumulator + current.donation;
+  }, 0);
+  return sum;
 }
 
 /////////////// CLOSURES ///////////////
@@ -323,11 +330,14 @@ function tallyUpDonations(/* CODE HERE */) {
  * Study the code for counter1 and counter2. Answer the questions below.
  * 
  * 1. What is the difference between counter1 and counter2?
+ * ANSWER: In counter1, the inner `counter` function is returned before being   executed. In counter2, the `count` variable is normally initialized inside the block scope of the function without any issues because the variable was declared in the global scope. `counter1` will return a reference to the counter function.
  * 
  * 2. Which of the two uses a closure? How can you tell?
+ * ANSWER: counter1 uses a closure because the inner nested blocks of code reference things outside of its lexical scope, but still operate. The items from outside of the inner function's scope are still accessible.
  * 
  * 3. In what scenario would the counter1 code be preferable? In what scenario would counter2 be better? 
- *
+ * ANSWER: Closures are useful because they can allow your functions/code to remember data/info.
+ * 
 */
 
 // counter1 code
@@ -368,8 +378,15 @@ function counter2() {
  * counter() // should return 0
  * etc
 */
-function counterMakerWithLimit(/* CODE HERE */) {
-  /* CODE HERE */
+function counterMakerWithLimit(maxValue) {
+  let count = 0;
+  function counter() {
+    if (count === maxValue + 1) {
+      count = 0;
+    }
+    return count++;
+  }
+  return counter;
 }
 
 /////////////// END OF CHALLENGE ///////////////
